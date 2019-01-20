@@ -54,7 +54,7 @@
           </size>
          </property>
          <property name="title">
-          <string>DB Einstellungen</string>
+          <string>DB Settings</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
@@ -157,7 +157,7 @@
          <item>
           <widget class="QPushButton" name="pushButton_cancel">
            <property name="text">
-            <string>&amp;Abbrechen</string>
+            <string>&amp;Cancel</string>
            </property>
           </widget>
          </item>

@@ -170,7 +170,7 @@ void MainWindow::on_action_Settings_triggered()
 
 void MainWindow::on_pushButton_addNewDiscounter_clicked()
 {
-    DiscounterDialog *dialog = new DiscounterDialog( this, "&Hinzufügen", "", "" );
+    DiscounterDialog *dialog = new DiscounterDialog( this, "&Add", "", "" );
 
     QObject::connect( dialog, &DiscounterDialog::discounterDialogOkClick,
                       this, &MainWindow::onDiscounterDialogOkClicked,
@@ -312,12 +312,17 @@ void MainWindow::on_pushButton_save_clicked()
     {
         normalPrice = this->ui->textEdit_normalPrice->text().replace(',','.').toDouble( &ok );
     }
+    else
+    {
+        emit saved( false, "Missing Input", "Normal Price is empty!" );
+        return;
+    }
 
     if( !ok )
     {
         qDebug() << "Normal-Price muss ein Zahlen-Wert sein!";
 
-        emit saved( false );
+        emit saved( false, "Invalid Normal Price", "Normal Price is invalid!\nPlease enter a valid number!" );
 
         return;
 
@@ -328,12 +333,18 @@ void MainWindow::on_pushButton_save_clicked()
     {
         offerPrice = this->ui->textEdit_offerPrice->text().replace(',','.').toDouble( &ok );
     }
+    else
+    {
+        emit saved( false, "Missing Input", "Offer Price is empty!" );
+
+        return;
+    }
 
     if( !ok  )
     {      
         qDebug() << "Offer-Price muss ein Zahlen-Wert sein!";
 
-        emit saved( false );
+        emit saved( false, "Invalid Offer Price", "Offer Price is invalid!\nPlease enter a valid number!" );
 
         return;
 
@@ -343,7 +354,7 @@ void MainWindow::on_pushButton_save_clicked()
     this->dbDataProvider->insertIntoDiscounterShopItem( shopItemId, discounterId, normalPrice, offerPrice );
     qDebug() << "Saved";
 
-    emit saved( true );
+    emit saved( true, "Saved", "Successfully saved" );
 }
 
 void MainWindow::on_comboBox_shopItem_currentTextChanged( const QString &text )
@@ -360,7 +371,7 @@ void MainWindow::on_comboBox_discounter_currentTextChanged( const QString &text 
 
 void MainWindow::on_pushButton_editShopItem_clicked()
 {
-    ShopItemDialog *dialog = new ShopItemDialog( this, "&Ändern",
+    ShopItemDialog *dialog = new ShopItemDialog( this, "&Save",
                 this->ui->comboBox_shopItem->currentText(),
                 this->cachedShopItems[this->ui->comboBox_shopItem->currentText()] );
 
@@ -376,7 +387,7 @@ void MainWindow::on_pushButton_editDiscounter_clicked()
     const uint discounterId = this->cachedDiscounters[this->ui->comboBox_discounter->currentText()];
     Discounter discounter = this->dbDataProvider->getDiscounter( discounterId );
 
-    DiscounterDialog *dialog = new DiscounterDialog( this, "&Ändern",
+    DiscounterDialog *dialog = new DiscounterDialog( this, "&Save",
                 discounter.getName(),
                 discounter.getLocation(),
                 discounterId );
@@ -390,7 +401,7 @@ void MainWindow::on_pushButton_editDiscounter_clicked()
 
 void MainWindow::on_pushButton_addNewShopItem_clicked()
 {
-    ShopItemDialog *dialog = new ShopItemDialog( this, "&Hinzufügen", "" );
+    ShopItemDialog *dialog = new ShopItemDialog( this, "&Add", "" );
 
     QObject::connect( dialog, &ShopItemDialog::shopItemDialogOkClick,
                       this, &MainWindow::onShopItemDialogOkClicked,
@@ -402,8 +413,8 @@ void MainWindow::on_pushButton_addNewShopItem_clicked()
 void MainWindow::on_pushButton_removeShopItem_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question( this, tr( "Löschen" ),
-                                     tr( "Eintrag wirklich löschen?" ),
+    reply = QMessageBox::question( this, tr( "Delete" ),
+                                     tr( "Delete entry?" ),
                                     QMessageBox::Yes|QMessageBox::No );
 
     if( reply == QMessageBox::Yes )
@@ -421,8 +432,8 @@ void MainWindow::on_pushButton_removeShopItem_clicked()
 void MainWindow::on_pushButton_removeDiscounter_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question( this, tr( "Löschen" ),
-                                     tr( "Eintrag wirklich löschen?" ),
+    reply = QMessageBox::question( this, tr( "Delete" ),
+                                     tr( "Delete entry?" ),
                                     QMessageBox::Yes|QMessageBox::No );
 
     if( reply == QMessageBox::Yes )
@@ -442,14 +453,7 @@ void MainWindow::on_actionAbout_CostimizerDBTool_triggered()
     QMessageBox::about( this, "About CostimizerDBTool", "A \"C++ Let's Try [Qt]\" - Community Project\nof Tutor Exilius\nhttp://twitch.tv/TutorExilius");
 }
 
-void MainWindow::onSaved( bool successful )
+void MainWindow::onSaved( bool successful, const QString &caption, const QString &message )
 {
-    if( successful )
-    {
-        QMessageBox::about( this, "Saved", "Successfully saved!" );
-    }
-    else
-    {
-        QMessageBox::about( this, "Error", "Inputs are incorrect!\nPlease type in valid numbers!" );
-    }
+    QMessageBox::about( this, caption, message );
 }

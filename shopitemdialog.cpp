@@ -3,6 +3,8 @@
 
 #include "mainwindow.h"
 
+#include <QMessageBox>
+
 ShopItemDialog::ShopItemDialog( QWidget *parent, const QString &buttonName,
                                 const QString &shopItemName,
                                 const uint &currentEditingShopItemId )
@@ -37,6 +39,12 @@ ShopItemDialog::~ShopItemDialog()
 
 void ShopItemDialog::on_pushButton_ok_clicked()
 {
+    if( this->ui->lineEdit_name->text().isEmpty() )
+    {
+        QMessageBox::about( this, "Missing Input", "name is empty!");
+        return;
+    }
+
     this->mainWindow->updateShopItemDBData( this->currentEditingShopItemId,
                                     this->ui->lineEdit_name->text() );
     this->close();
@@ -44,5 +52,10 @@ void ShopItemDialog::on_pushButton_ok_clicked()
 
 void ShopItemDialog::onShopItemDialogOkClicked()
 {
+    if( this->ui->lineEdit_name->text().isEmpty() )
+    {
+        return;
+    }
+
     emit shopItemDialogOkClick( this->currentEditingShopItemId );
 }

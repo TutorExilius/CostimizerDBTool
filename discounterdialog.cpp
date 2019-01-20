@@ -3,6 +3,8 @@
 
 #include "mainwindow.h"
 
+#include <QMessageBox>
+
 DiscounterDialog::DiscounterDialog( QWidget *parent, const QString &buttonName,
                                 const QString &discounterName,
                                 const QString &location,
@@ -40,6 +42,14 @@ DiscounterDialog::~DiscounterDialog()
 
 void DiscounterDialog::on_pushButton_ok_clicked()
 {
+    if( this->ui->lineEdit_name->text().isEmpty() ||
+        this->ui->lineEdit_location->text().isEmpty() )
+    {
+        QMessageBox::about( this, "Missing Input", "One of your inputs is empty!");
+
+        return;
+    }
+
     this->mainWindow->updateDiscounterDBData( this->currentEditingDiscounterId,
                                     this->ui->lineEdit_name->text(),
                                     this->ui->lineEdit_location->text() );
