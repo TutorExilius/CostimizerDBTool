@@ -83,6 +83,10 @@ MainWindow::MainWindow( QWidget *parent )
 
     this->loadShopItems();
     this->loadDiscounter();
+
+    QObject::connect( this, &MainWindow::saved,
+                      this, &MainWindow::onSaved,
+                      Qt::UniqueConnection );
 }
 
 MainWindow::~MainWindow()
@@ -304,29 +308,42 @@ void MainWindow::on_pushButton_save_clicked()
     double normalPrice = 0.0;
     double offerPrice = 0.0;
 
-    if( !this->ui->textEdit_normalPrice->toPlainText().isEmpty() )
+    if( !this->ui->textEdit_normalPrice->text().isEmpty() )
     {
-        normalPrice = this->ui->textEdit_normalPrice->toPlainText().toDouble( &ok );
+        normalPrice = this->ui->textEdit_normalPrice->text().replace(',','.').toDouble( &ok );
     }
 
     if( !ok )
     {
         qDebug() << "Normal-Price muss ein Zahlen-Wert sein!";
-        throw "Normal-Price muss ein Zahlen-Wert sein!";
+
+        emit saved( false );
+
+        return;
+
+        // throw "Normal-Price muss ein Zahlen-Wert sein!";
     }
 
-    if( !this->ui->textEdit_offerPrice->toPlainText().isEmpty() )
+    if( !this->ui->textEdit_offerPrice->text().isEmpty() )
     {
-        offerPrice = this->ui->textEdit_offerPrice->toPlainText().toDouble( &ok );
+        offerPrice = this->ui->textEdit_offerPrice->text().replace(',','.').toDouble( &ok );
     }
 
-    if( !ok )
-    {
+    if( !ok  )
+    {      
         qDebug() << "Offer-Price muss ein Zahlen-Wert sein!";
-        throw "Offer-Price muss ein Zahlen-Wert sein!";
+
+        emit saved( false );
+
+        return;
+
+        // throw "Offer-Price muss ein Zahlen-Wert sein!";
     }
 
     this->dbDataProvider->insertIntoDiscounterShopItem( shopItemId, discounterId, normalPrice, offerPrice );
+    qDebug() << "Saved";
+
+    emit saved( true );
 }
 
 void MainWindow::on_comboBox_shopItem_currentTextChanged( const QString &text )
@@ -422,5 +439,17 @@ void MainWindow::on_pushButton_removeDiscounter_clicked()
 
 void MainWindow::on_actionAbout_CostimizerDBTool_triggered()
 {
-    QMessageBox::about( this, "About CostimizerDBTool", "A \"C++ Let's Try [Qt]\" - Community Project\nof Tutor Exilius (http://twitch.tv/TutorExilius)");
+    QMessageBox::about( this, "About CostimizerDBTool", "A \"C++ Let's Try [Qt]\" - Community Project\nof Tutor Exilius\nhttp://twitch.tv/TutorExilius");
+}
+
+void MainWindow::onSaved( bool successful )
+{
+    if( successful )
+    {
+        QMessageBox::about( this, "Saved", "Successfully saved!" );
+    }
+    else
+    {
+        QMessageBox::about( this, "Error", "Inputs are incorrect!\nPlease type in valid numbers!" );
+    }
 }

@@ -48,6 +48,10 @@ private slots:
     void on_pushButton_removeDiscounter_clicked();
 
     void on_actionAbout_CostimizerDBTool_triggered();
+    void onSaved( bool successful );
+
+signals:
+    void saved( bool successful );
 
 private:
     void addNewDiscounter( const QString &name, const QString &location );
