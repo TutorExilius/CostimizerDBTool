@@ -33,7 +33,8 @@ SOURCES += \
     shopitem.cpp \
     config.cpp \
     shopitemdialog.cpp \
-    discounterdialog.cpp
+    discounterdialog.cpp \
+    configdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,12 +44,14 @@ HEADERS += \
     shopitem.h \
     config.h \
     shopitemdialog.h \
-    discounterdialog.h
+    discounterdialog.h \
+    configdialog.h
 
 FORMS += \
         mainwindow.ui \
     shopitemdialog.ui \
-    discounterdialog.ui
+    discounterdialog.ui \
+    configdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

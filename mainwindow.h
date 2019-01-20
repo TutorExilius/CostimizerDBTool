@@ -27,6 +27,8 @@ public:
                                  const QString &newName,
                                  const QString &newLocation );
 
+    void saveConfig( const Config config );
+
 public slots:
     void onShopItemDialogOkClicked( const uint &shopItemId );
     void onDiscounterDialogOkClicked( const uint &discounterId );
@@ -34,24 +36,18 @@ public slots:
 private slots:
     void on_action_About_Qt_triggered();
     void on_action_Close_triggered();
-
+    void on_action_Settings_triggered();
     void on_pushButton_addNewDiscounter_clicked();
-
     void on_pushButton_save_clicked();
-
     void on_comboBox_shopItem_currentTextChanged(const QString &arg1);
-
     void on_comboBox_discounter_currentTextChanged(const QString &arg1);
-
     void on_pushButton_editShopItem_clicked();
-
     void on_pushButton_editDiscounter_clicked();
-
     void on_pushButton_addNewShopItem_clicked();
-
     void on_pushButton_removeShopItem_clicked();
-
     void on_pushButton_removeDiscounter_clicked();
+
+    void on_actionAbout_CostimizerDBTool_triggered();
 
 private:
     void addNewDiscounter( const QString &name, const QString &location );

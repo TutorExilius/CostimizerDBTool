@@ -9,6 +9,7 @@
 #include <algorithm>
 
 #include "shopitemdialog.h"
+#include "configdialog.h"
 #include "discounterdialog.h"
 
 #include "db_dataprovider.h"
@@ -17,7 +18,7 @@ MainWindow::MainWindow( QWidget *parent )
 : QMainWindow{ parent }
 , ui{ new Ui::MainWindow }
 , dbDataProvider{ nullptr }
-, config{ R"(C:\Users\exi\Desktop\config.txt)" }
+, config{ QCoreApplication::applicationDirPath() + "/config.txt" }
 {
     this->ui->setupUi(this);
 
@@ -101,6 +102,12 @@ void MainWindow::updateDiscounterDBData( const uint &discounterId, const QString
                                             newLocation );
 }
 
+void MainWindow::saveConfig(const Config config)
+{
+    this->config = config;
+    this->config.writeConfigFile();
+}
+
 void MainWindow::onShopItemDialogOkClicked( const uint &shopItemId )
 {
     this->loadShopItems();
@@ -147,6 +154,14 @@ void MainWindow::on_action_About_Qt_triggered()
 void MainWindow::on_action_Close_triggered()
 {
     this->close();
+}
+
+void MainWindow::on_action_Settings_triggered()
+{
+    qDebug() << "Settings...";
+
+    ConfigDialog *settings = new ConfigDialog{ this, this->config };
+    settings->exec();
 }
 
 void MainWindow::on_pushButton_addNewDiscounter_clicked()
@@ -403,4 +418,9 @@ void MainWindow::on_pushButton_removeDiscounter_clicked()
     {
         qDebug() << "Yes was *not* clicked";
     }
+}
+
+void MainWindow::on_actionAbout_CostimizerDBTool_triggered()
+{
+    QMessageBox::about( this, "About CostimizerDBTool", "A \"C++ Let's Try [Qt]\" - Community Project\nof Tutor Exilius (http://twitch.tv/TutorExilius)");
 }
