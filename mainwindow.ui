@@ -31,6 +31,10 @@
   <property name="windowTitle">
    <string>Costimizer DB Tool</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icon.qrc">
+    <normaloff>:/tutor_exilius_logo.png</normaloff>:/tutor_exilius_logo.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -558,6 +562,8 @@
   <tabstop>textEdit_offerPrice</tabstop>
   <tabstop>pushButton_save</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="icon.qrc"/>
+ </resources>
  <connections/>
 </ui>

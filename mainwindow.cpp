@@ -8,6 +8,7 @@
 
 #include <algorithm>
 
+#include "customaboutdialog.h"
 #include "shopitemdialog.h"
 #include "configdialog.h"
 #include "discounterdialog.h"
@@ -450,7 +451,25 @@ void MainWindow::on_pushButton_removeDiscounter_clicked()
 
 void MainWindow::on_actionAbout_CostimizerDBTool_triggered()
 {
-    QMessageBox::about( this, "About CostimizerDBTool", "A \"C++ Let's Try [Qt]\" - Community Project\nof Tutor Exilius\nhttp://twitch.tv/TutorExilius");
+    QVector<QPair<DialogSection, QString>> dialogSections{
+            { DialogSection::ICON, ":/tutor_exilius_logo.png" },
+            { DialogSection::TITLE, "About CostimizerDBTool" },
+            { DialogSection::VERSION, "v1.0" },
+            { DialogSection::RELEASE_DATE, "2019-01-25" },
+            { DialogSection::ICON, ":/tutor_exilius_logo.png" },
+            { DialogSection::SHORT_INFO, "That's a Tutor Exilius Qt project started 2019-01-18 on "
+                                         "<a href=\"https://twitch.tv/tutorexilius\">https://twitch.tv/tutorexilius</a>" },
+            { DialogSection::DESCRIPTION, "A tool to manage the database used in Costimizer (see repository: "
+                    "<a href=\"https://github.com/TutorExilius/Costimizer\">https://github.com/TutorExilius/Costimizer</a>)." },
+            { DialogSection::AUTHOR, "Tutor Exilius" },
+            { DialogSection::CREDITS, "Special thanks to my twitch community which supported in my live stream chat!" },
+            { DialogSection::LICENCE, "GPLv3. See Licence.txt" },
+            { DialogSection::RESOURCES, "You can download the source code on github: "
+                        "<a href=\"https://github.com/tutorexilius/CostimizerDBTool\">https://github.com/tutorexilius/CostimizerDBTool</a>." }
+        };
+
+    CustomAboutDialog *about = new CustomAboutDialog{ this, dialogSections };
+    about->exec();
 }
 
 void MainWindow::onSaved( bool successful, const QString &caption, const QString &message )

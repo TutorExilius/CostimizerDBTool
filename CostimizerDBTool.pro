@@ -34,7 +34,8 @@ SOURCES += \
     config.cpp \
     shopitemdialog.cpp \
     discounterdialog.cpp \
-    configdialog.cpp
+    configdialog.cpp \
+    customaboutdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -45,15 +46,20 @@ HEADERS += \
     config.h \
     shopitemdialog.h \
     discounterdialog.h \
-    configdialog.h
+    configdialog.h \
+    customaboutdialog.h
 
 FORMS += \
         mainwindow.ui \
     shopitemdialog.ui \
     discounterdialog.ui \
-    configdialog.ui
+    configdialog.ui \
+    customaboutdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    icon.qrc
